@@ -1,0 +1,14 @@
+{
+  "name": "odin-book",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm-run-all --parallel backend frontend",
+    "backend": "cd backend && npm run startdev",
+    "frontend": "cd frontend && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
