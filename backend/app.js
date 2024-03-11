@@ -3,7 +3,8 @@ var express = require('express');
 var cors = require('cors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var logger = require('morgan');                     
+const session =  require('express-session');
 
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -14,7 +15,8 @@ const postRouter = require('./routes/post');
 const commentRouter = require('./routes/comments');
 
 var app = express();
-app.use(cors());
+app.use(cors({origin: 'http://localhost:5173',credentials: true}));
+app.use(session({ secret: process.env.EXPRESS_SESSION_SECRET, resave: false, saveUninitialized: true}));
 
 app.use(logger('dev'));
 app.use(express.json());
