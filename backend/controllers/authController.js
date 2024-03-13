@@ -54,6 +54,17 @@ exports.register_user = [
         })
         .withMessage('Passwords must be a minimum of 5 character and contain at least 1 uppercase letter')
         .escape(),
+
+    body('confirmPassword')
+        .trim()
+        .custom((val, {req}) => {
+            if (val !== req.body.password) {
+                throw new Error('Passwords do not match');
+            } else {
+                return true;
+            }
+        })
+        .escape(),
     
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
@@ -72,13 +83,9 @@ exports.register_user = [
         });
 
         const token = generateToken(user._id);
-        res.cookie('jwt', token , {
-            httpOnly: true,
-            // other cookie options like domain, path, secure, etc.
-        });
 
         //Send user and token
-        res.json({user});
+        res.json({user, token});
     })
 ];
 
@@ -92,13 +99,9 @@ exports.login_user = asyncHandler(async (req, res, next) => {
     if (user && (await bcrypt.compare(password, user.password))) {
 
         const token = generateToken(user._id);
-        res.cookie('jwt', token , {
-            httpOnly: true,
-            // other cookie options like domain, path, secure, etc.
-        });
 
         //Send user and token
-        res.json({user});
+        res.json({user, token});
     } else {
         return res.status(401).json('Incorrect email or password');
     }
@@ -106,6 +109,6 @@ exports.login_user = asyncHandler(async (req, res, next) => {
 
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, {
-        expiresIn: '30d',
+        expiresIn: '1h',
     });
 }
