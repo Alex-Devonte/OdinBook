@@ -1,5 +1,10 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux';
+import { register, reset } from '../../features/auth/authSlice';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -7,12 +12,27 @@ function Register() {
         lastName: '', 
         email: '', 
         password: '', 
-        confirmPassword: ''});
+        confirmPassword: ''
+    });
 
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    }
+    //Select specific state needed for component
+    const {user, isLoading, isError, isSuccess, fieldErrors, message} = useSelector((state) => state.auth);
 
+    useEffect(() => {
+        if (isError) {
+            toast.error(message);
+        }
+
+        //Navigate to home if user registers or is already logged in
+        if (isSuccess || user) {
+            navigate('/');
+        }
+    }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+    
     const handleChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -20,8 +40,27 @@ function Register() {
         }));
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        const userData = {
+            firstName: formData.firstName,
+            lastName: formData.lastName, 
+            email: formData.email, 
+            password: formData.password, 
+            confirmPassword: formData.confirmPassword
+        }
+
+        dispatch(register(userData));  
+    }
+
+    if (isLoading) {
+        return <p>Loading...</p>
+    }
+    
     return (
         <section>
+            <ToastContainer />
             <h1 className='text-7xl mb-10'>Sign up</h1>
             <form onSubmit={handleSubmit} className='grid grid-cols-2 gap-2 w-3/5 mx-auto'>
                 <div className='hidden col-span-full text-left mb-5'>Please fix the errors in red: </div>
@@ -34,10 +73,11 @@ function Register() {
                         onChange={handleChange}
                         className='border-2 border-black p-0.5 w-full'
                     />
-                    <div
-                        className='hidden text-red-300 text-left'>
-                        Error
-                    </div>
+                    {fieldErrors.firstName && (
+                        <div className='text-red-300 text-left'>
+                            <p>{fieldErrors.firstName}</p>
+                        </div>
+                    )}
                 </div>
 
                 <div className='grid-cols-2'>
@@ -49,10 +89,11 @@ function Register() {
                         onChange={handleChange}
                         className='border-2 border-black p-0.5 w-full'
                     />
-                    <div 
-                        className='hidden text-red-300 text-left'>
-                        Error
-                    </div>
+                    {fieldErrors.lastName && (
+                        <div className='text-red-300 text-left'>
+                            <p>{fieldErrors.lastName}</p>
+                        </div>
+                    )}
                 </div>
 
                 <div className="col-span-full">
@@ -64,10 +105,11 @@ function Register() {
                         onChange={handleChange}
                         className='border-2 border-black p-0.5 w-full'
                     />
-                    <div 
-                        className='hidden text-red-300 text-left'>
-                        Error
-                    </div>
+                    {fieldErrors.email && (
+                        <div className='text-red-300 text-left'>
+                            <p>{fieldErrors.email}</p>
+                        </div>
+                    )}
                 </div>
 
                 <div className="grid-cols-2">
@@ -79,10 +121,11 @@ function Register() {
                         onChange={handleChange}
                         className='border-2 border-black p-0.5 w-full'
                     />
-                    <div 
-                        className='hidden text-red-300 text-left'>
-                        Error
-                    </div>
+                    {fieldErrors.password && (
+                        <div className='text-red-300 text-left'>
+                            <p>{fieldErrors.password}</p>
+                        </div>
+                    )}
                 </div>
 
                 <div className="grid-cols-2">
@@ -94,10 +137,11 @@ function Register() {
                         onChange={handleChange}
                         className='border-2 border-black p-0.5 w-full'
                     />
-                    <div 
-                        className='hidden text-red-300 text-left'>
-                        Error
-                    </div>
+                    {fieldErrors.confirmPassword && (
+                        <div className='text-red-300 text-left'>
+                            <p>{fieldErrors.confirmPassword}</p>
+                        </div>
+                    )}        
                 </div>
                 
                 <button 
