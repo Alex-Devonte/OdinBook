@@ -9,6 +9,7 @@ exports.register_user = [
         .trim()
         .notEmpty()
         .withMessage('First name is required')
+        .bail()
         .isLength({min: 2, max: 30})
         .withMessage('First name must be between 2 & 30 characters')
         .escape(),
@@ -17,6 +18,7 @@ exports.register_user = [
         .trim()
         .notEmpty()
         .withMessage('Last name is required')
+        .bail()
         .isLength({min: 2, max: 30}).withMessage('Last name must be between 2 & 30 characters')
         .escape(),
 
@@ -24,6 +26,7 @@ exports.register_user = [
         .trim()
         .notEmpty()
         .withMessage('Email is required')
+        .bail()
         .isEmail()
         .withMessage('Email addresses must be in the following format: `name@domain.com`')
         .custom(async (email) => {
@@ -40,6 +43,7 @@ exports.register_user = [
     body('password')
         .trim()
         .notEmpty().withMessage('Password is required')
+        .bail()
         .isStrongPassword({
             minLength: 5,
             minLowercase: 0,
@@ -67,8 +71,14 @@ exports.register_user = [
             password: await bcrypt.hash(req.body.password, 10),
         });
 
+        const token = generateToken(user._id);
+        res.cookie('jwt', token , {
+            httpOnly: true,
+            // other cookie options like domain, path, secure, etc.
+        });
+
         //Send user and token
-        res.json({user, token: generateToken(user._id)});
+        res.json({user});
     })
 ];
 
@@ -80,7 +90,15 @@ exports.login_user = asyncHandler(async (req, res, next) => {
 
     //Check if submitted password matches hashed password
     if (user && (await bcrypt.compare(password, user.password))) {
-        res.json({user, token: generateToken(user._id)});
+
+        const token = generateToken(user._id);
+        res.cookie('jwt', token , {
+            httpOnly: true,
+            // other cookie options like domain, path, secure, etc.
+        });
+
+        //Send user and token
+        res.json({user});
     } else {
         return res.status(401).json('Incorrect email or password');
     }
