@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
 
-function Signup() {
+function Register() {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '', 
@@ -112,4 +112,4 @@ function Signup() {
     )
 }
 
-export default Signup;
+export default Register;
