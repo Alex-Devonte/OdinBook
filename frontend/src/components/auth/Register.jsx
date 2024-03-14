@@ -63,7 +63,6 @@ function Register() {
             <ToastContainer />
             <h1 className='text-7xl mb-10'>Sign up</h1>
             <form onSubmit={handleSubmit} className='grid grid-cols-2 gap-2 w-3/5 mx-auto'>
-                <div className='hidden col-span-full text-left mb-5'>Please fix the errors in red: </div>
                 <div className='grid-cols-2'>
                     <input
                         type='text'
