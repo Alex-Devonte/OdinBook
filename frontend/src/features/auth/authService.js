@@ -1,5 +1,5 @@
 import axios from 'axios';
-const REGISTER_URL = '/api/auth/register';
+const REGISTER_URL = '/api/auth/register'
 
 const register = async (userData) => {
     const response = await axios.post(REGISTER_URL, userData);
@@ -10,6 +10,10 @@ const register = async (userData) => {
     return response.data;
 }
 
-const authService = { register };
+const logout = () => {
+    localStorage.removeItem('user');
+}
+
+const authService = { register, logout };
 export default authService;
 
