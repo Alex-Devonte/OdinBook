@@ -15,7 +15,7 @@ const postRouter = require('./routes/post');
 const commentRouter = require('./routes/comments');
 
 var app = express();
-app.use(cors({origin: 'http://localhost:5173',credentials: true}));
+app.use(cors({origin: process.env.ORIGIN_URL, credentials: true}));
 app.use(session({ secret: process.env.EXPRESS_SESSION_SECRET, resave: false, saveUninitialized: true}));
 
 app.use(logger('dev'));
@@ -54,8 +54,8 @@ app.use(function(err, req, res, next) {
 //Ensures that only values set in the schema get saved to the db
 mongoose.set('strictQuery', false)
 
-//Set the MongoDB connection string based on the environment
-const mongoDB = (process.env.NODE_ENV === 'production') ? process.env.MONGODB_URL_PROD : process.env.MONGODB_URL_DEV;
+//Set the MongoDB connection string
+const mongoDB = process.env.MONGODB_URL
 
 main().catch((err) => console.log(err));
 async function main() {
