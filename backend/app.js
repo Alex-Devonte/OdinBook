@@ -5,6 +5,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');                     
 const session =  require('express-session');
+const MongoStore = require('connect-mongo');
 
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -15,8 +16,23 @@ const postRouter = require('./routes/post');
 const commentRouter = require('./routes/comments');
 
 var app = express();
+
+//------MongoDB & Mongoose settings
+//Ensures that only values set in the schema get saved to the db
+mongoose.set('strictQuery', false)
+
+main().catch((err) => console.log(err));
+async function main() {
+  await mongoose.connect(process.env.MONGODB_URL);
+}
+
 app.use(cors({origin: process.env.ORIGIN_URL, credentials: true}));
-app.use(session({ secret: process.env.EXPRESS_SESSION_SECRET, resave: false, saveUninitialized: true}));
+app.use(session({
+  secret: process.env.EXPRESS_SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true, 
+  store: MongoStore.create({mongoUrl: process.env.MONGODB_URL}) //mongoUrl: Set the MongoDB connection string
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -48,19 +64,6 @@ app.use(function(err, req, res, next) {
     }
   })
 });
-
-//------MongoDB & Mongoose settings
-
-//Ensures that only values set in the schema get saved to the db
-mongoose.set('strictQuery', false)
-
-//Set the MongoDB connection string
-const mongoDB = process.env.MONGODB_URL
-
-main().catch((err) => console.log(err));
-async function main() {
-  await mongoose.connect(mongoDB);
-}
 
 //Use the provided PORT or default to 3000
 const PORT = process.env.PORT || 3000; 
