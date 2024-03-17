@@ -83,9 +83,12 @@ exports.register_user = [
         });
 
         const token = generateToken(user._id);
+       
+        //Create regular js object so token can be added as property
+        let userWithToken = JSON.parse(JSON.stringify(user));
+        userWithToken.token = token;
 
-        //Send user and token
-        res.json({user, token});
+        res.json(userWithToken);
     })
 ];
 
@@ -97,11 +100,14 @@ exports.login_user = asyncHandler(async (req, res, next) => {
 
     //Check if submitted password matches hashed password
     if (user && (await bcrypt.compare(password, user.password))) {
-
         const token = generateToken(user._id);
 
+        //Create regular js object so token can be added as property
+        let userWithToken = JSON.parse(JSON.stringify(user));
+        userWithToken.token = token;
+        
         //Send user and token
-        res.json({user, token});
+        res.json(userWithToken);
     } else {
         return res.status(401).json('Incorrect email or password');
     }
