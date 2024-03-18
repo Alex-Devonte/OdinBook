@@ -1,9 +1,11 @@
 import './App.css'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout, reset } from './features/auth/authSlice.js'
+import { logout, reset } from './features/auth/authSlice.js'  
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Home from './components/Home.jsx';
+import Header from './components/Header.jsx';
 
 function App() {
   const navigate = useNavigate();
@@ -15,22 +17,15 @@ function App() {
     dispatch(reset());
   }
 
+  if (!user) {
+    
+    return <><p>You cant view this page since you arent logged in</p> <Link to='/login'>LOGOUT</Link></>
+  }
+  
   return (
     <>
-      <h1 className='text-9xl'>OdinBook</h1>
-      {user ?
-        (
-          <>
-            <p>Welcome! You are currently signed in</p>
-            <button onClick={onLogout}>Logout</button>  
-          </>
-        ) : 
-        (
-          <>
-            <p>You aren't logged in</p>
-          </>
-        )}
-
+      <Header />
+      <Home />
     </>
   )
 }
