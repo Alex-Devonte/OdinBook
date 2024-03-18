@@ -1,21 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const {checkAuth} = require('../authMiddleware');
+const postController = require('../controllers/postController');
 
-router.get('/', function(req, res, next) {
-    res.json('Post index');
-});
-
-router.get('/:postid', function(req, res, next) {
-    res.json('Post Detail');
-});
-
-router.post('/:userid/create', function(req, res, next) {
-    res.json('Create Post');
-});
-
-router.delete('/:userid/delete', function(req, res, next) {
-    res.json('Delete Post');
-});
-
+router.post('/create', checkAuth, postController.create_post);
 
 module.exports = router;
