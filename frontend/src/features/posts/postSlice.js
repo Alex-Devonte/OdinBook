@@ -6,6 +6,7 @@ const initialState = {
     isError: false,
     isSuccess: false,
     isLoading: false,
+    fieldErrors: [],
     message: ''
 }
 
@@ -15,13 +16,16 @@ export const createPost = createAsyncThunk('posts/create', async (postContent, t
         const token = thunkAPI.getState().auth.user.token;
         return await postService.createPost(postContent, token);
     } catch (error) {
-        
-        //Send specific message if unauthorized
         if (error.response.data) {
-            const message = error.response.data.error.message;
-            console.log(error);
-            return thunkAPI.rejectWithValue(message);
-            //Otherwise send general error
+            const errors = error.response.data.errors;
+            
+            //Create new array with field name and error message
+            let fieldErrors = [];
+            errors.forEach(element => {
+                fieldErrors[element.path] = element.msg;
+            });
+
+            return thunkAPI.rejectWithValue(fieldErrors);
         } else {
             const message = error.message;
             return thunkAPI.rejectWithValue(message);
@@ -48,6 +52,7 @@ export const postSlice = createSlice({
             .addCase(createPost.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
+                state.fieldErrors = action.payload;
                 state.message = action.payload;
             })
 
