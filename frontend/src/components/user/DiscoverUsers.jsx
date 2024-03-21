@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../features/user/userSlice';
+import { getUsers, sendFollowRequest } from '../../features/user/userSlice';
 import { useEffect } from 'react';
 
 function DiscoverUsers() {
@@ -10,6 +10,10 @@ function DiscoverUsers() {
         dispatch(getUsers());  
     }, [dispatch]);
 
+    const sendRequest = (userID) => {
+        dispatch(sendFollowRequest(userID));
+    };
+
     return (
         <div>
             <h1>Discover Users</h1>
@@ -18,7 +22,7 @@ function DiscoverUsers() {
                     <div key={i} className="border border-black">
                         <p>{user.firstName + ' ' + user.lastName}</p>
                         <img className='w-10 rounded-full' src={user.profilePicture} />
-                        <button>Send Friend Request</button>
+                        <button onClick={() => sendRequest(user._id)}>Send Friend Request</button>
                     </div>
                 )
             })}
