@@ -1,5 +1,6 @@
 import axios from 'axios';
 const GET_USERS_URL = '/api/users';
+const FOLLOW_REQUEST_URL = '/api/users/followUser';
 
 const checkAuth = (token) => {
     return axios.create({
@@ -16,5 +17,11 @@ const getUsers = async (token) => {
     return response.data;
 }
 
-const userService = { getUsers };
+const sendFollowRequest = async (token, currentUserID, requestUserID) => {
+    const response = await checkAuth(token).post(FOLLOW_REQUEST_URL, {currentUserID: currentUserID, requestUserID: requestUserID});
+    console.log(response.data);
+    return response.data;
+}
+
+const userService = { getUsers, sendFollowRequest };
 export default userService;
