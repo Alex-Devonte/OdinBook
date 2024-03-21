@@ -9,9 +9,10 @@ const initialState = {
     message: ''
 }
 
-export const getUsers = createAsyncThunk('user/getUsers', async (thunkAPI) => {
+export const getUsers = createAsyncThunk('user/getUsers', async (_, thunkAPI) => {
     try {
-        return await userService.getUsers();
+        const token = thunkAPI.getState().auth.user.token; 
+        return await userService.getUsers(token);
     } catch (error) {
         console.log(error);
         return thunkAPI.rejectWithValue(error);
