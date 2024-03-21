@@ -8,15 +8,16 @@ const UserSchema = new Schema({
     password: {type: String, required: true},
     profilePicture: {type: String, default: '../placeholderAvatar.jpg'},
     bio: {type: String, default: ''},
+    followers: [{
+        user: {type: Schema.Types.ObjectId, ref: 'User'},
+        status: {type: String, enum: ['pending', 'accepted', 'denied'], default: 'pending'}
+    }],
+    following: [{type: Schema.Types.ObjectId, ref: 'User'}],
     dateCreated: {type: Date, default: Date.now()}
 });
 
 UserSchema.virtual('fullName').get(function() {
     return this.firstName + ' ' + this.lastName;
 });
-
-UserSchema.virtual('url').get(function() {
-    return `/users/${this._id}/profile`;
-})
 
 module.exports = mongoose.model('User', UserSchema);
