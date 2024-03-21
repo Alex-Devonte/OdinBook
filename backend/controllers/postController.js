@@ -2,6 +2,12 @@ const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
 const Post = require('../models/post');
 
+exports.get_posts =  asyncHandler(async (req, res, next) => {
+    //Get posts as well as their author
+    const posts = await Post.find({}).limit(3).populate({path: 'author', select: '-email -password -bio'}).exec();
+    return res.json(posts);
+});
+
 exports.create_post = [
     body('content')
         .trim()
