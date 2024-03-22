@@ -10,7 +10,7 @@ const UserSchema = new Schema({
     bio: {type: String, default: ''},
     followers: [{
         user: {type: Schema.Types.ObjectId, ref: 'User'},
-        status: {type: String, enum: ['pending', 'accepted', 'denied'], default: 'pending'}
+        status: {type: String, enum: ['pending', 'accepted'], default: 'pending'}
     }],
     following: [{type: Schema.Types.ObjectId, ref: 'User'}],
     dateCreated: {type: Date, default: Date.now()}
