@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/user');
 
 exports.get_users = asyncHandler(async (req, res, next) => {
-    const users = await User.find({}).select('firstName lastName profilePicture').limit(5).exec();
+    const users = await User.find({}).select('firstName lastName profilePicture').limit(10).exec();
     return res.json(users);
 });
 
@@ -22,4 +22,30 @@ exports.follow_user = asyncHandler(async (req, res, next) => {
         return res.json('You already follow this user.');
     }
 
+});
+
+exports.respond_to_follow_request = asyncHandler(async (req, res, next) => {
+    const {userResponse, followerID, respondingUserID} = req.body;
+
+    if (userResponse === 'accepted') {
+        //Find the follower with the specified ID and update the status
+        await User.findOneAndUpdate(
+            { _id: respondingUserID, 'followers._id': followerID },
+            { $set: { 'followers.$.status': userResponse } }
+        ).exec();
+
+        //After user accepts request, add them to the followers following array
+        await User.findByIdAndUpdate(followerID).updateOne({$push: {following:  respondingUserID}}).exec();
+    
+        res.json('Accepted');
+
+    } else if (userResponse === 'denied') {
+        //Remove user from followers array if request is denied
+        await User.findOneAndUpdate(
+            { _id: respondingUserID },
+            { $pull: { followers: { _id: (followerID) } } }
+        ).exec();
+
+        res.json('Denied request');
+    }
 });
