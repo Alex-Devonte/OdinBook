@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { respondToFollowRequest } from '../../features/user/userSlice';
+import { respondToFollowRequest } from '../../features/social/socialSlice';
 
 function FollowList() {
     const dispatch = useDispatch();

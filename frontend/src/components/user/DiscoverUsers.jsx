@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers, sendFollowRequest } from '../../features/user/userSlice';
+import { getUsers } from '../../features/user/userSlice';
+import { sendFollowRequest } from '../../features/social/socialSlice';
 import { useEffect } from 'react';
 
 function DiscoverUsers() {
