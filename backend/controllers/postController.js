@@ -1,10 +1,29 @@
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
 const Post = require('../models/post');
+const User = require('../models/user');
 
 exports.get_posts =  asyncHandler(async (req, res, next) => {
-    //Get posts as well as their author
-    const posts = await Post.find({}).limit(3).populate({path: 'author', select: '-email -password -bio'}).exec();
+    //Get user id from response
+    const userID = req.query.userID;
+
+    //Get list of people the user follows
+    const { following } = await User.findById(userID).select('following').exec();
+    const posts = [];
+
+    //Get posts from the people the user follows
+    await Promise.all(following.map(async (id) => {
+        const post = await Post.find({author: id})
+            .select('-_id')
+            .populate({
+                path: 'author',
+                select: '-_id firstName lastName profilePicture'
+            }).exec();
+
+        //Use spread operator to flatten array since Promise all was creating array of arrays
+        posts.push(...post);
+    }));
+
     return res.json(posts);
 });
 
