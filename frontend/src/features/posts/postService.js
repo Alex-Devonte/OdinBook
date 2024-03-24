@@ -18,9 +18,8 @@ const createPost = async (postContent, token) => {
     return response.data;
 }
 
-const getPosts = async (token) => {
-    const response = await checkAuth(token).get(GET_POSTS_URL);
-    console.log(response);
+const getPosts = async (token, userID) => {
+    const response = await checkAuth(token).get(GET_POSTS_URL,{ params: {userID}});
     return response.data;
 }
 
