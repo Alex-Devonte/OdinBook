@@ -10,14 +10,14 @@ const checkAuth = (token) => {
         }
     });
 }
-const sendFollowRequest = async (token, currentUserID, requestUserID) => {
-    const response = await checkAuth(token).post(FOLLOW_REQUEST_URL, {currentUserID: currentUserID, requestUserID: requestUserID});
+const sendFollowRequest = async (token, requestUserID) => {
+    const response = await checkAuth(token).post(FOLLOW_REQUEST_URL, {requestUserID: requestUserID});
     // console.log(response.data);
     return response.data;
 }
 
-const respondToFollowRequest = async (token, userResponse, followerID, respondingUserID) => {
-    const response = await checkAuth(token).post(RESPOND_TO_REQUEST_URL, {userResponse, followerID, respondingUserID});
+const respondToFollowRequest = async (token, userResponse, followerID) => {
+    const response = await checkAuth(token).post(RESPOND_TO_REQUEST_URL, {userResponse, followerID});
     console.log(response.data);
     return response.data;
 }

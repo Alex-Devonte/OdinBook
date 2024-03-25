@@ -10,8 +10,7 @@ const initialState = {
 export const sendFollowRequest = createAsyncThunk('social/sendFollowRequest', async (requestUserID, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token; 
-        const currentUserID = thunkAPI.getState().auth.user._id;
-        return await socialService.sendFollowRequest(token, currentUserID, requestUserID);
+        return await socialService.sendFollowRequest(token, requestUserID);
     } catch (error) {
         const message = error.response.data.error.message;
         console.log(message);
@@ -22,8 +21,7 @@ export const sendFollowRequest = createAsyncThunk('social/sendFollowRequest', as
 export const respondToFollowRequest = createAsyncThunk('social/respondToFollowRequest', async (userData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token; 
-        const respondingUserID = thunkAPI.getState().auth.user._id;
-        return await socialService.respondToFollowRequest(token, userData.userResponse, userData.followerID, respondingUserID);
+        return await socialService.respondToFollowRequest(token, userData.userResponse, userData.followerID);
     } catch (error) {
         const message = error.response.data.error.message;
         console.log(message);
