@@ -5,7 +5,7 @@ const User = require('../models/user');
 
 exports.get_posts =  asyncHandler(async (req, res, next) => {
     //Get user id from response
-    const userID = req.query.userID;
+    const userID = req.user._id;
 
     //Get list of people the user follows
     const { following } = await User.findById(userID).select('following').exec();

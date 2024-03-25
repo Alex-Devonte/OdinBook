@@ -3,7 +3,9 @@ const User = require('../models/user');
 
 exports.follow_user = asyncHandler(async (req, res, next) => {
     //IDs of currently logged in user and user that is being sent a follow request
-    const {currentUserID, requestUserID} = req.body;
+    const currentUserID = req.user._id;
+    const {requestUserID} = req.body;
+
     const currentUser = await User.findById(currentUserID);
     const requestUser = await User.findById(requestUserID);
 
@@ -20,8 +22,9 @@ exports.follow_user = asyncHandler(async (req, res, next) => {
 });
 
 exports.respond_to_follow_request = asyncHandler(async (req, res, next) => {
-    const {userResponse, followerID, respondingUserID} = req.body;
-
+    const {userResponse, followerID} = req.body;
+    const respondingUserID = req.user._id;
+    
     if (userResponse === 'accepted') {
         //Find the follower with the specified ID and update the status
         await User.findOneAndUpdate(
