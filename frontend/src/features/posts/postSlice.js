@@ -44,6 +44,17 @@ export const getPosts = createAsyncThunk('posts/getPosts', async (_, thunkAPI) =
     }
 });
 
+export const likePost = createAsyncThunk('posts/likePost', async (postID, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token;
+        return await postService.likePost(token, postID);
+    } catch (error) {
+        const message = error.message;
+        console.log(error);
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+
 export const postSlice = createSlice({
     name: 'post',
     initialState,
@@ -79,6 +90,27 @@ export const postSlice = createSlice({
                 state.isError = true;
                 state.message = action.payload;
             })
+            .addCase(likePost.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(likePost.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+
+                //Find index of post
+                const postIndex = state.posts.findIndex(post => post._id === action.payload._id);
+
+                //Update the post with the updated post data so the like count will update
+                if (postIndex !== -1) {
+                    state.posts[postIndex] = action.payload;
+                }       
+            })
+            .addCase(likePost.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+
 
     }
 })
