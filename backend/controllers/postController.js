@@ -14,7 +14,6 @@ exports.get_posts =  asyncHandler(async (req, res, next) => {
     //Get posts from the people the user follows
     await Promise.all(following.map(async (id) => {
         const post = await Post.find({author: id})
-            .select('-_id')
             .populate({
                 path: 'author',
                 select: '-_id firstName lastName profilePicture'
@@ -25,6 +24,35 @@ exports.get_posts =  asyncHandler(async (req, res, next) => {
     }));
 
     return res.json(posts);
+});
+
+exports.like_post = asyncHandler(async (req, res, next) => {
+    //Get id of user who liked post
+    const userID = req.user._id;
+
+    //Get post id from response
+    const {postID} = req.body;
+
+    const post = await Post.findById(postID).exec();
+
+    //'Like' or 'unlike' post based on if user is in the likes array
+    if (post.likes.includes(userID)) {
+        const result = await Post.findByIdAndUpdate(postID,{ $pull: {likes: userID} }, { new: true })
+            .populate({
+                path: 'author',
+                select: '-_id firstName lastName profilePicture'
+            }).exec();
+
+        res.send(result);
+    } else {
+        const result = await Post.findByIdAndUpdate(postID, { $push: {likes: userID} }, { new: true })
+            .populate({
+                path: 'author',
+                select: '-_id firstName lastName profilePicture'
+            }).exec();
+
+        res.send(result);
+    }
 });
 
 exports.create_post = [
