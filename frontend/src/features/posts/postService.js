@@ -1,6 +1,7 @@
 import axios from 'axios';
 const CREATE_POST_URL = '/api/posts/create';
 const GET_POSTS_URL = '/api/posts/';
+const LIKE_POST_URL = '/api/posts/likePost';
 
 //Checks for valid JWT
 const checkAuth = (token) => {
@@ -23,5 +24,10 @@ const getPosts = async (token) => {
     return response.data;
 }
 
-const postService = { createPost, getPosts };
+const likePost = async(token, postID) => {
+    const response = await checkAuth(token).post(LIKE_POST_URL, {postID: postID});
+    return response.data;
+}
+
+const postService = { createPost, getPosts, likePost };
 export default postService;
