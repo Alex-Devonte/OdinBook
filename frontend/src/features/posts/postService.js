@@ -2,6 +2,7 @@ import axios from 'axios';
 const CREATE_POST_URL = '/api/posts/create';
 const GET_POSTS_URL = '/api/posts/';
 const LIKE_POST_URL = '/api/posts/likePost';
+const CREATE_COMMENT_URL = '/api/posts/comments/create';
 
 //Checks for valid JWT
 const checkAuth = (token) => {
@@ -29,5 +30,10 @@ const likePost = async(token, postID) => {
     return response.data;
 }
 
-const postService = { createPost, getPosts, likePost };
+const createComment = async(token, postID, commentText) => {
+    const response = await checkAuth(token).post(CREATE_COMMENT_URL, {postID, commentText});
+    return response.data;
+}
+
+const postService = { createPost, getPosts, likePost, createComment };
 export default postService;
