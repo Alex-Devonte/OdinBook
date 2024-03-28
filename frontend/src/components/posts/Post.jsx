@@ -1,15 +1,24 @@
 import { useDispatch } from 'react-redux';
-import { likePost } from '../../features/posts/postSlice';
+import { createComment, likePost } from '../../features/posts/postSlice';
+import { useState } from 'react';
 
 function Post(props) {
     const {post} = props;
     const dispatch = useDispatch();
+    const [comment, setComment] = useState('');
 
     const handleLikePost = () => {
         dispatch(likePost(post._id));
     };
 
-    console.log(post);
+    const handleCreateComment = () => {
+        const commentData = {postID: post._id, commentText: comment};
+        console.log(comment);
+        dispatch(createComment(commentData));
+        setComment('');
+    }
+
+   // console.log(post);
 
     return (
         <div className='container'>
@@ -20,6 +29,14 @@ function Post(props) {
                 <p>Comments: {post.comments.length}</p>
                 <p>Likes: {post.likes.length}</p>
                 <button onClick={handleLikePost}>Click here to like</button>
+                <textarea
+                    name='commentText' 
+                    value={comment} 
+                    onChange={(e) => setComment(e.target.value)}
+                    className="border-2 border-black border-solid m-5"
+                >
+                </textarea>
+                <button onClick={handleCreateComment}>Click here add comment</button>
             </div>
         </div>
     );
