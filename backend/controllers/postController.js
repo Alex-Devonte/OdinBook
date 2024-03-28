@@ -26,35 +26,6 @@ exports.get_posts =  asyncHandler(async (req, res, next) => {
     return res.json(posts);
 });
 
-exports.like_post = asyncHandler(async (req, res, next) => {
-    //Get id of user who liked post
-    const userID = req.user._id;
-
-    //Get post id from response
-    const {postID} = req.body;
-
-    const post = await Post.findById(postID).exec();
-
-    //'Like' or 'unlike' post based on if user is in the likes array
-    if (post.likes.includes(userID)) {
-        const result = await Post.findByIdAndUpdate(postID,{ $pull: {likes: userID} }, { new: true })
-            .populate({
-                path: 'author',
-                select: '-_id firstName lastName profilePicture'
-            }).exec();
-
-        res.send(result);
-    } else {
-        const result = await Post.findByIdAndUpdate(postID, { $push: {likes: userID} }, { new: true })
-            .populate({
-                path: 'author',
-                select: '-_id firstName lastName profilePicture'
-            }).exec();
-
-        res.send(result);
-    }
-});
-
 exports.create_post = [
     body('content')
         .trim()
@@ -79,4 +50,62 @@ exports.create_post = [
 
         res.status(200).json(post);
     })
+];
+
+exports.like_post = asyncHandler(async (req, res, next) => {
+    //Get id of user who liked post
+    const userID = req.user._id;
+
+    //Get post id from response
+    const {postID} = req.body;
+
+    const post = await Post.findById(postID).exec();
+
+    //'Like' or 'unlike' post based on if user is in the likes array
+    const updateLike = post.likes.includes(userID) ? { $pull: { likes: userID } } : { $push: { likes: userID } };
+
+    const result = await Post.findByIdAndUpdate(postID, updateLike, { new: true })
+        .populate({
+            path: 'author',
+            select: '-_id firstName lastName profilePicture'
+        }).exec();
+
+    res.send(result);
+});
+
+exports.comment_post = [
+    body('commentText')
+        .trim()
+        .notEmpty()
+        .withMessage("Comments cannot be empty")
+        .isLength({max: 120})
+        .withMessage('Comments cannot exceed 120 characters')
+        .escape(),
+
+        asyncHandler(async (req, res, next) => {
+            
+            const errors = validationResult(req);
+
+            if (!errors.isEmpty()) {
+                return res.status(400).json(errors);
+            }
+
+            const userID = req.user._id;
+            const {postID} = req.body;
+            const {commentText} = req.body;
+  
+            //Find post by its ID and add comment along with its author
+            const comment = await Post.findOneAndUpdate({_id: postID},
+                { $push: 
+                    {
+                        comments:{ author: userID, text: commentText}
+                    },
+                },
+                {
+                    new: true
+                })
+                .populate({path: 'comments.author', select: '-bio -email -password'}).exec();
+
+            return res.status(200).json(comment);
+        })
 ];
