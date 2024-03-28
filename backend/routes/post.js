@@ -8,4 +8,6 @@ router.get('/', checkAuth, postController.get_posts);
 router.post('/create', checkAuth, postController.create_post);
 router.post('/likePost', checkAuth, postController.like_post);
 
+router.post('/comments/create', checkAuth, postController.comment_post);
+
 module.exports = router;
