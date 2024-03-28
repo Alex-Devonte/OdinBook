@@ -60,8 +60,8 @@ exports.create_post = [
         .trim()
         .notEmpty()
         .withMessage('Post cannot be empty')
-        .isLength({max: 100})
-        .withMessage('Post cannot be more than 100 characters')
+        .isLength({max: 240})
+        .withMessage('Post cannot be more than 240 characters')
         .escape(),
 
     asyncHandler(async (req, res, next) => {
