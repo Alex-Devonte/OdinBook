@@ -14,10 +14,16 @@ exports.get_posts =  asyncHandler(async (req, res, next) => {
     //Get posts from the people the user follows
     await Promise.all(following.map(async (id) => {
         const post = await Post.find({author: id})
-            .populate({
-                path: 'author',
-                select: '-_id firstName lastName profilePicture'
-            }).exec();
+            .populate([
+                {
+                    path: 'author',
+                    select: '-_id firstName lastName profilePicture'
+                },
+                {
+                    path: 'comments.author',
+                    select: '-bio -email -password -followers -following'
+                }
+            ]).exec();
 
         //Use spread operator to flatten array since Promise all was creating array of arrays
         posts.push(...post);
@@ -104,7 +110,7 @@ exports.comment_post = [
                 {
                     new: true
                 })
-                .populate({path: 'comments.author', select: '-bio -email -password'}).exec();
+                .populate({path: 'comments.author', select: '-bio -email -password -followers -following'}).exec();
 
             return res.status(200).json(comment);
         })
