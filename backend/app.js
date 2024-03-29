@@ -13,7 +13,6 @@ require('dotenv').config();
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
 const postRouter = require('./routes/post');
-const commentRouter = require('./routes/comments');
 
 var app = express();
 
@@ -42,7 +41,6 @@ app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/posts', postRouter);
-app.use('/api/comments', commentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
