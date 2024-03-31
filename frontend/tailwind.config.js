@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'odin-gold': '#CC9543'
+      },
+    },
   },
   plugins: [],
 }
