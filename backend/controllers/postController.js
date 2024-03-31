@@ -17,7 +17,7 @@ exports.get_posts =  asyncHandler(async (req, res, next) => {
             .populate([
                 {
                     path: 'author',
-                    select: '-_id firstName lastName profilePicture'
+                    select: '_id firstName lastName profilePicture' //Send id as well
                 },
                 {
                     path: 'comments.author',
@@ -115,3 +115,17 @@ exports.comment_post = [
             return res.status(200).json(comment);
         })
 ];
+
+exports.delete_comment = asyncHandler(async (req, res, next) => {
+    const {postID, commentID} = req.body;
+    //Find post and remove specified comment from array
+    const result = await Post.findByIdAndUpdate(postID,
+        { 
+            $pull: { comments: { _id: commentID} }
+        }, 
+        {
+            new: true
+        }).exec();
+
+    return res.send(result);
+});

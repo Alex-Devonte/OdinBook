@@ -3,6 +3,7 @@ const CREATE_POST_URL = '/api/posts/create';
 const GET_POSTS_URL = '/api/posts/';
 const LIKE_POST_URL = '/api/posts/likePost';
 const CREATE_COMMENT_URL = '/api/posts/comments/create';
+const DELETE_COMMENT_URL = '/api/posts/comments/delete';
 
 //Checks for valid JWT
 const checkAuth = (token) => {
@@ -35,5 +36,10 @@ const createComment = async(token, postID, commentText) => {
     return response.data;
 }
 
-const postService = { createPost, getPosts, likePost, createComment };
+const deleteComment = async(token, postID, commentID) => {
+    const response = await checkAuth(token).delete(DELETE_COMMENT_URL, { data: {postID, commentID} });
+    return response.data;
+}
+
+const postService = { createPost, getPosts, likePost, createComment, deleteComment };
 export default postService;
