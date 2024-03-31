@@ -46,43 +46,49 @@ function Login() {
     }
 
     return (
-        <section>
-            <h1 className='text-7xl mb-10'>Log In</h1>
-            <form onSubmit={handleSubmit} className='grid grid-cols-2 gap-2 w-3/5 mx-auto'>
-            <div 
-                className='text-red-300 text-left'>
-                {message}
+        <section className='flex h-screen'>
+            <div className='bg-cover bg-center hidden md:block md:basis-2/5 lg:basis-4/12  bg-slate-500 bg-[url("/images/odinbg-colored.png")]'></div>
+            <div className='flex flex-col justify-center grow text-center'>
+                <h1 className='text-6xl mb-5'>OdinBook</h1>
+                <h3 className='text-xl  text-gray-500 mb-5'>Login to your account below</h3>
+                <form onSubmit={handleSubmit} className='grid grid-cols-2 gap-2 w-5/6 md:w-3/4 lg:w-5/12 mx-auto'>
+                    {message && (
+                        <div
+                            className='bg-red-100 text-red-600 rounded-md text-left font-semibold p-2 my-3 col-span-full'>
+                            {message}
+                        </div>
+                    )}
+                    <div className="col-span-full">
+                        <input
+                            type='text'
+                            name='email'
+                            placeholder='Email'
+                            value={formData.email}
+                            onChange={handleChange}
+                            className='bg-gray-200 rounded-md p-2 w-full'
+                        />
+                    </div>
+                    <div className="col-span-full">
+                        <input
+                            type='password'
+                            name='password'
+                            placeholder='Password'
+                            value={formData.password}
+                            onChange={handleChange}
+                            className='border-gray-500 bg-gray-200 rounded-md p-2 w-full'
+                        />
+                    </div>
+                    <button
+                        type='submit'
+                        className='bg-black text-white font-bold rounded-md p-2 col-span-full mt-5 transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'
+                    >
+                        Log In
+                    </button>
+                    <Link to='/register' className='justify-start text-left mt-5 col-span-full'>Don&#39;t have an account?
+                        <span className='text-odin-gold font-bold hover:underline transition duration-100 ease-linear hover:text-black'> Sign up here</span>
+                    </Link>
+                </form>
             </div>
-                <div className="col-span-full">
-                    <input
-                        type='text'
-                        name='email'
-                        placeholder='Email'
-                        value={formData.email}
-                        onChange={handleChange}
-                        className='border-2 border-black p-0.5 w-full'
-                    />
-                </div>
-
-                <div className="col-span-full">
-                    <input
-                        type='password'
-                        name='password'
-                        placeholder='Password'
-                        value={formData.password}
-                        onChange={handleChange}
-                        className='border-2 border-black p-0.5 w-full'
-                    />
-                </div>
-
-                <button 
-                    type='submit'
-                    className='border-2 border-black p-2 col-span-full'
-                >
-                    Log In
-                </button>
-                <Link to='/register' className='justify-start text-left mt-5'>Don&#39;t have an account? Sign up here</Link>
-            </form>
         </section>
     )   
 }
