@@ -5,6 +5,7 @@ import { register, reset } from '../../features/auth/authSlice';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Spinner from '../Spinner';
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -55,7 +56,7 @@ function Register() {
     }
 
     if (isLoading) {
-        return <p>Loading...</p>
+        return <Spinner />
     }
     
     return (
