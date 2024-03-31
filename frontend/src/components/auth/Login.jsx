@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { login, reset } from '../../features/auth/authSlice';
 import { toast } from 'react-toastify';
@@ -12,20 +12,29 @@ function Login() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
 
     //Select specific state needed for component
     const {user, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth);
 
     useEffect(() => {
-        if (isError) {
-            toast.error(message);
+        if (location.state) {
+            const { siteMsg, errorMsg } = location.state;
+
+            if (siteMsg) {
+                toast.info(siteMsg, { theme: 'colored'});
+            } else if (errorMsg) {
+                toast.error(errorMsg);
+                
+            }
+            window.history.replaceState({}, ''); //Clear location state
         }
 
         //Navigate to home if user logs in successfully or is already logged in
         if (isSuccess || user) {
             navigate('/');
         }
-    }, [user, isError, isSuccess, message, navigate, dispatch]);
+    }, [user, isError, isSuccess, message, navigate, dispatch, location]);
 
     
     const handleChange = (e) => {
@@ -48,6 +57,7 @@ function Login() {
 
     return (
         <section className='flex h-screen'>
+            <ToastContainer />
             <div className='bg-cover bg-center hidden md:block md:basis-2/5 lg:basis-4/12  bg-slate-500 bg-[url("/images/odinbg-colored.png")]'></div>
             <div className='flex flex-col justify-center grow text-center'>
                 <h1 className='text-6xl mb-5'>OdinBook</h1>
