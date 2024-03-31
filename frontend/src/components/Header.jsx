@@ -1,14 +1,17 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../features/auth/authSlice.js'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Header() {
     const {user} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
+    
     const onLogout = () => {
         dispatch(logout());
         dispatch(reset());
+        navigate('/login', {state: {'siteMsg': 'Logged out successfully'}});
+        window.history.replaceState({}, ''); //Clear location state
     }
 
     return (
