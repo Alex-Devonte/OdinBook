@@ -23,22 +23,19 @@ function CreatePost() {
     }
 
     return (
-        <div className="container w-1/2 mx-auto bg-slate-600">
+        <div className='container w-1/3 mx-auto bg-slate-300 p-3 rounded-md'>
             <ToastContainer />
-            <div className="flex flex-col ">
+            <div className='flex'>
                 <textarea
-                    name="content"
-                    cols="80"
-                    rows="5"
-                    placeholder="What do you wanna say?"
+                    name='content'
+                    rows='1'
+                    placeholder='What do you wanna say?'
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    className="border-2 border-black border-solid"
+                    className='resize-none flex-1 rounded-lg p-2 focus:outline-odin-gold'
                 >
-                </textarea>  
-            </div>
-            <div className="flex justify-end p-2 text-gray-100 ">
-                <button onClick={handleCreatePost}>Post</button>
+                </textarea> 
+                <button onClick={handleCreatePost} className='bg-odin-gold text-white rounded-md p-1 ml-3 w-14'>Post</button>
             </div>
         </div>
     )
