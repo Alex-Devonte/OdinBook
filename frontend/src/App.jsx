@@ -24,7 +24,9 @@ function App() {
      {user && (
       <>
         <Header />
-        <Home />
+        <div id='content-container'>
+          <Home />
+        </div>
       </>
     )}
     </>
