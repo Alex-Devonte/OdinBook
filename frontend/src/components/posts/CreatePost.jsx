@@ -23,7 +23,7 @@ function CreatePost() {
     }
 
     return (
-        <div className='container w-1/3 mx-auto bg-slate-300 p-3 rounded-md'>
+        <div className='container mx-auto bg-slate-300 p-3 rounded-md'>
             <ToastContainer />
             <div className='flex'>
                 <textarea
