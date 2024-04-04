@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../features/user/userSlice';
-import { sendFollowRequest } from '../../features/social/socialSlice';
+import { sendFollowRequest } from '../../features/user/userSlice';
 import { useEffect } from 'react';
 
 function DiscoverUsers() {
@@ -16,7 +16,7 @@ function DiscoverUsers() {
     };
 
     return (
-        <div>
+        <div className='border-2 border-black p-5 mx-5'>
             <h1>Discover Users</h1>
             {users.map((user, i) => {
                 return (
