@@ -6,7 +6,7 @@ exports.get_users = asyncHandler(async (req, res, next) => {
     return res.json(users);
 });
 
-exports.follow_user = asyncHandler(async (req, res, next) => {
+exports.send_follow_request = asyncHandler(async (req, res, next) => {
     //IDs of currently logged in user and user that is being sent a follow request
     const currentUserID = req.user._id;
     const {requestUserID} = req.body;
