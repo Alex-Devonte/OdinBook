@@ -76,7 +76,7 @@ function Post(props) {
     }
 
     return (
-        <div className='container bg-slate-300 border rounded-lg m-5 p-1 w-1/3 mx-auto'>
+        <div className='container bg-slate-300 border rounded-lg m-5 p-1 mx-auto'>
             <div className='flex items-center gap-2 p-1'>
                 <img src={post.author.profilePicture} className="w-10 rounded-full"/>
                 <p>{post.author.firstName + ' ' + post.author.lastName}</p>
