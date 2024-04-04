@@ -6,10 +6,16 @@ import FollowList from './user/FollowList.jsx';
 function Home() {
     return (
         <>
-                    <FollowList />
-            <CreatePost />
-            <Feed />
-            <DiscoverUsers />
+         <div className="col-span-1">
+                <DiscoverUsers />
+            </div>
+            <div className="col-span-1">
+                <CreatePost  />
+                <Feed />
+            </div>
+            <div className="col-span-1">
+                <FollowList />
+            </div>
         </>
     )
 }
