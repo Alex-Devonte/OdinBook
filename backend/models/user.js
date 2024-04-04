@@ -12,7 +12,9 @@ const UserSchema = new Schema({
         user: {type: Schema.Types.ObjectId, ref: 'User'},
         status: {type: String, enum: ['pending', 'accepted'], default: 'pending'}
     }],
-    following: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    following: [{
+        user: {type: Schema.Types.ObjectId, ref: 'User'},
+    }],
     dateCreated: {type: Date, default: Date.now()}
 });
 
