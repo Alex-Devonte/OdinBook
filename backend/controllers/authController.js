@@ -96,7 +96,7 @@ exports.login_user = asyncHandler(async (req, res, next) => {
     const {email, password} = req.body;
 
     //Check for user email
-    const user = await User.findOne({email}).collation({locale: 'en', strength: 2});
+    const user = await User.findOne({email}).populate('followers.user').populate('following.user').collation({locale: 'en', strength: 2});
 
     //Check if submitted password matches hashed password
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -106,6 +106,7 @@ exports.login_user = asyncHandler(async (req, res, next) => {
         let userWithToken = JSON.parse(JSON.stringify(user));
         userWithToken.token = token;
         
+        console.log('User w token:', userWithToken);
         //Send user and token
         res.json(userWithToken);
     } else {
