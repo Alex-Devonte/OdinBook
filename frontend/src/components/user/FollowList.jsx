@@ -10,7 +10,6 @@ function FollowList() {
     useEffect(() => {
         console.log(user)   ;
         
-        console.log(following);
     }, [user]);
 
     const respondToRequest = (e, followerID) => {
@@ -22,45 +21,38 @@ function FollowList() {
 
     return (
         <div className='border-2 border-red-600'>
-            {user.firstName}
-            <h1>Follow List</h1>
             {followers?.length === 0 ? (
-                <p>No Followers Yet</p>
-            ) : 
-            (
+                <p>No followers yet</p>
+            ) : (
                 <ul>
-                    {followers.map((follower, i) => {
-                        if (follower && follower.status === 'pending') {
-                                return (
-                                    <li key={i}>
-                                        {follower.status} ---- {follower._id} <br/>
-                                        <button onClick={(e) => respondToRequest(e, follower._id)} value='accepted'>Accept</button>
-                                        <button onClick={(e) => respondToRequest(e, follower._id)} value='denied'>Deny</button>
-                                    </li>
-                                )
-                        } else if (follower && follower.status === 'accepted') {
+                    {followers && followers.map((follower, i) => {
+                        if (follower.status === 'pending') {
                             return (
                                 <li key={i}>
-                                    {follower.status} --- {follower._id}
+                                    {follower.status} {follower.user?.firstName}
+                                    <button onClick={(e) => respondToRequest(e, follower.user)} value='accepted'>Accept</button> 
+                                    <button onClick={(e) => respondToRequest(e, follower.user)} value='denied'>Deny</button>
                                 </li>
+                               
                             )
+                        } else if (follower.status === 'accepted') {
+                           return (<li key={i}> {follower.status} {follower.user?.firstName}</li>)
                         }
-                       
                     })}
                 </ul>
             )}
+            <hr />
             {following?.length === 0 ? (
-                <p>Not following anyone</p>
-            ) :
-            (
+                <p>Not following anyone yet</p>
+            ) : (
                 <ul>
-                    {following.map((follow, i) => {
+                    {following && following.map((follow, i) => {
                         return (
                             <li key={i}>
-                                {follow} <br/>
+                                {follow.user?.firstName} <br/>
                             </li>
-                        )        
-                    })}          
+                        )       
+                    })}
                 </ul>
             )}
         </div>
