@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userService from './userService';
+import { updateUserFollowers } from '../auth/authSlice';
 
 const initialState = {
     users: [],
@@ -19,10 +20,10 @@ export const getUsers = createAsyncThunk('user/getUsers', async (_, thunkAPI) =>
     }
 });
 
-export const sendFollowRequest = createAsyncThunk('user/sendFollowRequest', async (requestUserID, thunkAPI) => {
+export const sendFollowRequest = createAsyncThunk('user/sendFollowRequest', async (requestedUserID, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().auth.user.token; 
-        return await userService.sendFollowRequest(token, requestUserID);
+        const token = thunkAPI.getState().auth.user.token;  
+        return await userService.sendFollowRequest(token, requestedUserID);
     } catch (error) {
         const message = error.response.data.error.message;
         console.log(message);
@@ -32,8 +33,10 @@ export const sendFollowRequest = createAsyncThunk('user/sendFollowRequest', asyn
 
 export const respondToFollowRequest = createAsyncThunk('user/respondToFollowRequest', async (userData, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().auth.user.token; 
-        return await userService.respondToFollowRequest(token, userData.userResponse, userData.followerID);
+        const token = thunkAPI.getState().auth.user.token;
+        const response = await userService.respondToFollowRequest(token, userData.userResponse, userData.followerID);
+        thunkAPI.dispatch(updateUserFollowers(response));
+        return response;
     } catch (error) {
         const message = error.response.data.error.message;
         console.log(message);
