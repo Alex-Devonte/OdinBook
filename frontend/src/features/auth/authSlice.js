@@ -63,7 +63,18 @@ export const authSlice = createSlice({
     reducers: {
         reset: (state) => {
             return initialState;
-        }
+        },
+        updateUserFollowers: (state, action) => {
+            const { followers, following } = action.payload;
+
+            state.user = { //Create a new user object
+              ...state.user, //Copy existing user properties
+              followers, //Update followers
+              following //Update following
+            };
+            //Update local storage
+            localStorage.setItem('user', JSON.stringify(state.user)); 
+          }
     },
     extraReducers: (builder) => {
         builder
@@ -75,7 +86,7 @@ export const authSlice = createSlice({
                 state.isSuccess = true;
                 state.user = action.payload;
             })
-            .addCase(register.rejected, (state, action) => {
+            .addCase(register.rejected, (state, action) => {    
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
@@ -102,5 +113,5 @@ export const authSlice = createSlice({
     }
 });
 
-export const {reset} = authSlice.actions;
+export const {reset, updateUserFollowers} = authSlice.actions;
 export default authSlice.reducer;
