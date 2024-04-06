@@ -15,13 +15,11 @@ const checkAuth = (token) => {
 
 const getUsers = async (token) => {
     const response = await checkAuth(token).get(GET_USERS_URL);
-    // console.log(response.data);
     return response.data;
 }
 
-const sendFollowRequest = async (token, requestUserID) => {
-    const response = await checkAuth(token).post(FOLLOW_REQUEST_URL, {requestUserID: requestUserID});
-    // console.log(response.data);
+const sendFollowRequest = async (token, requestedUserID) => {
+    const response = await checkAuth(token).post(FOLLOW_REQUEST_URL, {requestedUserID: requestedUserID});
     return response.data;
 }
 
