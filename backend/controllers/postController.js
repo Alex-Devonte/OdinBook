@@ -11,9 +11,24 @@ exports.get_posts =  asyncHandler(async (req, res, next) => {
     const { following } = await User.findById(userID).select('following').exec();
     const posts = [];
 
-    //Get posts from the people the user follows
-    await Promise.all(following.map(async (id) => {
-        const post = await Post.find({author: id})
+    //Get posts from user
+    const userPosts = await Post.find({ author: userID})
+        .populate([
+            {
+                path: 'author',
+                select: '_id firstName lastName profilePicture' //Send id as well
+            },
+            {
+                path: 'comments.author',
+                select: '-bio -email -password -followers -following'
+            }
+        ]).exec();
+
+    posts.push(...userPosts);
+
+    //Get posts people the user follows
+    const followingPost = await Promise.all(following.map(async (id) => {
+        const post = await Post.find({author: id.user})
             .populate([
                 {
                     path: 'author',
@@ -25,10 +40,14 @@ exports.get_posts =  asyncHandler(async (req, res, next) => {
                 }
             ]).exec();
 
-        //Use spread operator to flatten array since Promise all was creating array of arrays
-        posts.push(...post);
+        return post;
     }));
 
+    //Use spread operator to flatten array since Promise all was creating array of arrays
+    posts.push(...followingPost.flat());
+
+    //Sort posts newest to oldest by creation date
+    posts.sort((a, b) => b.createdDate - a.createdDate);
     return res.json(posts);
 });
 
