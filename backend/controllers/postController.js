@@ -90,11 +90,16 @@ exports.like_post = asyncHandler(async (req, res, next) => {
     const updateLike = post.likes.includes(userID) ? { $pull: { likes: userID } } : { $push: { likes: userID } };
 
     const result = await Post.findByIdAndUpdate(postID, updateLike, { new: true })
-        .populate({
-            path: 'author',
-            select: '-_id firstName lastName profilePicture'
-        }).exec();
-
+        .populate([
+            {
+                path: 'author',
+                select: '-_id firstName lastName profilePicture'
+            },
+            {
+                path: 'comments.author',
+                select: '-bio -email -password -followers -following'
+            }
+        ]).exec();
     res.send(result);
 });
 
@@ -144,7 +149,8 @@ exports.delete_comment = asyncHandler(async (req, res, next) => {
         }, 
         {
             new: true
-        }).exec();
-
+        })
+        .populate({path: 'comments.author', select: '-bio -email -password -followers -following'}).exec();
+        
     return res.send(result);
 });
