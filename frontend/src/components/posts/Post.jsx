@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { createComment, deleteComment, likePost } from '../../features/posts/postSlice';
+import { createComment, deleteComment, deletePost, likePost } from '../../features/posts/postSlice';
 import { useState } from 'react';
 import { FaCommentAlt } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
@@ -33,7 +33,10 @@ function Post(props) {
         dispatch(deleteComment({postID, commentID}));
     }
 
-    // console.log(post);
+    const handleDeletePost = (postID) => {
+        dispatch(deletePost(postID));
+    }
+
     const listOfComments = post.comments.map(comment => (
         <div key={comment._id} className='flex flex-col'>
             <div className='flex items-center gap-3 p-1 mt-3'>
@@ -81,6 +84,9 @@ function Post(props) {
                 <img src={post.author.profilePicture} className="w-10 rounded-full"/>
                 <p>{post.author.firstName + ' ' + post.author.lastName}</p>
                 <p>{formatDate(post.createdDate)}</p>
+                {post.author._id === userID && (
+                <FaTrash onClick={() => handleDeletePost(post._id)} className='ml-auto cursor-pointer transition duration-75 ease-linear hover:fill-red-600'/>
+            )}
             </div>
             <div className='p-1 my-2'>
                 <p>{post.content}</p>
