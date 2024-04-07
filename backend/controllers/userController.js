@@ -2,8 +2,19 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/user');
 
 exports.get_users = asyncHandler(async (req, res, next) => {
-    const users = await User.find({}).select('firstName lastName profilePicture').limit(10).exec();
-    return res.json(users);
+    const userID = req.user._id;
+    const following = await User.findById(userID).select('following').exec();
+    const followingArr = following.following.map(follow => follow.user);
+
+    //Get non followed users
+    const discoverUsers = await User.find({
+        $and: [
+            { _id: { $ne: userID } },
+            { _id: { $nin : followingArr} }
+        ]
+    }).select('firstName lastName profilePicture').limit(10).exec();
+
+    return res.json(discoverUsers);
 });
 
 exports.send_follow_request = asyncHandler(async (req, res, next) => {
