@@ -3,10 +3,7 @@ const { body, validationResult } = require('express-validator');
 const Post = require('../models/post');
 const User = require('../models/user');
 
-exports.get_posts =  asyncHandler(async (req, res, next) => {
-    //Get user id from response
-    const userID = req.user._id;
-
+const getPosts = async (userID) => {
     //Get list of people the user follows
     const { following } = await User.findById(userID).select('following').exec();
     const posts = [];
@@ -48,7 +45,14 @@ exports.get_posts =  asyncHandler(async (req, res, next) => {
 
     //Sort posts newest to oldest by creation date
     posts.sort((a, b) => b.createdDate - a.createdDate);
-    return res.json(posts);
+    return posts;
+};
+
+exports.get_posts = asyncHandler(async (req, res, next) => {
+    //Get user id from response
+    const userID = req.user._id;
+    const posts = await getPosts(userID);
+    res.json(posts);
 });
 
 exports.create_post = [
@@ -76,6 +80,18 @@ exports.create_post = [
         res.status(200).json(post);
     })
 ];
+
+exports.delete_post = asyncHandler(async (req, res, next) => {
+    const { postID } = req.body;
+    const userID = req.user._id;
+
+    //Delete the specified post
+    const deletedPost = await Post.findOneAndDelete({_id: postID}).exec();
+
+    //Get the updated collection of posts
+    const updatedPosts = await getPosts(userID);
+    return res.json(updatedPosts)
+});
 
 exports.like_post = asyncHandler(async (req, res, next) => {
     //Get id of user who liked post
