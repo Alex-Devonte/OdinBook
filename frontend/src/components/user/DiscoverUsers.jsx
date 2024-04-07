@@ -18,6 +18,7 @@ function DiscoverUsers() {
     return (
         <div className='border-2 border-black p-5 mx-5'>
             <h1>Discover Users</h1>
+            {users.length === 0 && <p>Currently no users to discover</p>}
             {users.map((user, i) => {
                 return (
                     <div key={i} className="border border-black">
