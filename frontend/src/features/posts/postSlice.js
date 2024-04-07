@@ -14,7 +14,12 @@ export const createPost = createAsyncThunk('posts/create', async (postContent, t
     try {
         //Get token from auth slice of redux store state
         const token = thunkAPI.getState().auth.user.token;
-        return await postService.createPost(postContent, token);
+        const newPost =  await postService.createPost(postContent, token);
+        
+        //After successful post creation, fetch post again for latest data
+        thunkAPI.dispatch(getPosts());
+        
+        return newPost;
     } catch (error) {
         if (error.response.data) {
             const errors = error.response.data.errors;
