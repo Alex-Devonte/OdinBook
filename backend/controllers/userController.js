@@ -12,7 +12,7 @@ exports.get_users = asyncHandler(async (req, res, next) => {
             { _id: { $ne: userID } },
             { _id: { $nin : followingArr} }
         ]
-    }).select('firstName lastName profilePicture').limit(10).exec();
+    }).select('firstName lastName profilePicture followers').limit(10).exec();
 
     return res.json(discoverUsers);
 });
