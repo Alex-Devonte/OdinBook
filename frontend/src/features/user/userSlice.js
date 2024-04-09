@@ -23,7 +23,9 @@ export const getUsers = createAsyncThunk('user/getUsers', async (_, thunkAPI) =>
 export const sendFollowRequest = createAsyncThunk('user/sendFollowRequest', async (requestedUserID, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token;  
-        return await userService.sendFollowRequest(token, requestedUserID);
+        const response = await userService.sendFollowRequest(token, requestedUserID);
+        thunkAPI.dispatch(getUsers());
+        return response;
     } catch (error) {
         const message = error.response.data.error.message;
         console.log(message);
