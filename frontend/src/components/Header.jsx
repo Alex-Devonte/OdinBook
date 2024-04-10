@@ -15,16 +15,16 @@ function Header() {
     }
 
     return (
-        <div className='flex items-center justify-between p-3'>
+        <div className='flex items-center justify-between p-3 mb-4 bg-slate-700 text-white'>
             <div className='flex p-3'>
-                <Link to='/' className='text-5xl font-bold'>OdinBook</Link>
+                <Link to='/' className='text-5xl font-bold hover:text-odin-gold'>OdinBook</Link>
             </div>
-            <div className='flex gap-5 items-center p-3'>
+            <div className='flex gap-5 items-center p-3 text-lg'>
                 <Link to='/profile' className='flex items-center hover:underline gap-3'>
                     <img src={user.profilePicture} className='w-10 rounded-full'/>
                     <p>Hello, {user.firstName}!</p>
                 </Link>
-                <button onClick={onLogout}>Logout</button>
+                <button onClick={onLogout} className='hover:underline'>Logout</button>
             </div>
         </div>
     )
