@@ -1,9 +1,15 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import Header from '../Header'
+import { useState } from 'react';
+import { updateBio } from '../../features/user/userSlice';
 
 function Profile() {
     const {user} = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+
+    const [editMode, setEditMode] = useState(false);
+    const [bio, setBio] = useState(user.bio);
      
     //Send user to login page if they aren't logged in
     if (user === null) {
@@ -15,6 +21,24 @@ function Profile() {
         month: 'long',
         day: 'numeric'
     });
+
+    const handleChange = (e) => {
+        setBio(prevBio => e.target.value);
+    }
+
+    const handleCancel = () => {
+        setEditMode(false);
+        setBio(user.bio)
+    }
+
+    const handleEditBio = () => {
+        setEditMode(true);
+    };
+
+    const handleSubmit = () => {
+        dispatch(updateBio({updatedBio: bio}));
+        setEditMode(false);
+    }
     
     return (
         <div className=' '>
@@ -29,8 +53,15 @@ function Profile() {
             <div className='p-5 md:flex flex-col  md:w-1/4 md:mx-auto'>
                 <h2 className='text-2xl font-bold md:hidden'>Bio</h2>
                 <div className='flex flex-col'>
-                    <textarea cols='100' readOnly className='border-2 my-6'></textarea>
-                    <button className='self-start bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md'>Edit Bio</button>
+                    <textarea cols='100' name='bio' readOnly={!editMode ? true : false} onChange={handleChange} value={bio} className='border-2 border-slate-600 my-6 p-1 read-only:bg-slate-400 read-only:text-white'></textarea>
+                    {editMode ? (
+                            <div className='flex justify-between'>
+                                <button onClick={handleSubmit} className='self-start bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md'>Update Bio</button>
+                                <button onClick={handleCancel} className='self-start bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md'>Cancel</button>
+                            </div>
+                        ) : (
+                            <button onClick={handleEditBio} className='self-start bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md'>Edit Bio</button>
+                        )}                           
                 </div>
             </div>
             <div className='flex flex-col my-10'>
