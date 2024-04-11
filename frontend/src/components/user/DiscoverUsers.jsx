@@ -17,22 +17,20 @@ function DiscoverUsers() {
     };
 
     return (
-        <div className='bg-slate-300 rounded-lg p-5 mx-5'>
-            <h1 className='text-2xl mb-5'>Discover Users</h1>
+        <div className='bg-slate-300 rounded-lg overflow-y-scroll h-96 md:overflow-y-auto md:h-auto md:ml-8'>
+            <h1 className='text-2xl mb-5 shadow-md sticky top-0 bg-slate-500 p-3 rounded-sm md:static'>Discover Users</h1>
             {users.length === 0 && <p>Currently no users to discover</p>}
             {users.map((user, i) => {
                 //Check if user already exists in the followers array
                 const isRequestSent = user.followers.some(follower => follower.user === currentUserID);
                 
                 return (
-                    <div key={i} className='flex justify-between my-5'>
-                        <div className='flex items-center p-2'>
+                    <div key={i} className='flex justify-between my-5 p-3'>
+                        <div className='flex items-center gap-5 w-full'>
                             <img className='flex justify-center w-20 rounded-full' src={user.profilePicture} />
-                        </div>
-                        <div className='flex items-center p-2'>
                             <p className='text-lg'>{user.firstName + ' ' + user.lastName}</p>
                         </div>
-                        <div className='flex items-center p-2'>
+                        <div className='flex items-center '>
                             {/* If request is already sent, show 'Request Sent' */}
                             {isRequestSent ? (
                                 <button disabled className='bg-odin-gold text-white p-2 rounded-xl opacity-35 w-44 h-10'>Request Sent</button>
