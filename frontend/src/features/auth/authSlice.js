@@ -64,6 +64,16 @@ export const authSlice = createSlice({
         reset: (state) => {
             return initialState;
         },
+        updateUserBio: (state, action) => {
+            const { bio } = action.payload;
+            console.log(bio);
+
+            state.user = {
+                ...state.user,
+                bio
+            };
+            localStorage.setItem('user', JSON.stringify(state.user));
+        },
         updateUserFollowers: (state, action) => {
             const { followers, following } = action.payload;
 
@@ -113,5 +123,5 @@ export const authSlice = createSlice({
     }
 });
 
-export const {reset, updateUserFollowers} = authSlice.actions;
+export const {reset, updateUserBio, updateUserFollowers} = authSlice.actions;
 export default authSlice.reducer;
