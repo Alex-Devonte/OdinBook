@@ -2,6 +2,7 @@ import axios from 'axios';
 const GET_USERS_URL = '/api/users';
 const FOLLOW_REQUEST_URL = '/api/users/followUser';
 const RESPOND_TO_REQUEST_URL = '/api/users/respondToRequest';
+const UPDATE_BIO_URL = '/api/users/update/bio';
 
 
 const checkAuth = (token) => {
@@ -18,6 +19,11 @@ const getUsers = async (token) => {
     return response.data;
 }
 
+const updateBio = async (token, updatedBio) => {
+    const response = await checkAuth(token).put(UPDATE_BIO_URL, updatedBio);
+    return response.data;
+}
+
 const sendFollowRequest = async (token, requestedUserID) => {
     const response = await checkAuth(token).post(FOLLOW_REQUEST_URL, {requestedUserID: requestedUserID});
     return response.data;
@@ -30,5 +36,5 @@ const respondToFollowRequest = async (token, userResponse, followerID) => {
 }
 
 
-const userService = { getUsers, sendFollowRequest, respondToFollowRequest };
+const userService = { getUsers, updateBio, sendFollowRequest, respondToFollowRequest };
 export default userService;

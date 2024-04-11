@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userService from './userService';
-import { updateUserFollowers } from '../auth/authSlice';
+import { updateUserBio, updateUserFollowers } from '../auth/authSlice';
 
 const initialState = {
     users: [],
@@ -19,6 +19,19 @@ export const getUsers = createAsyncThunk('user/getUsers', async (_, thunkAPI) =>
         return thunkAPI.rejectWithValue(error);
     }
 });
+
+export const updateBio = createAsyncThunk('user/updateBio', async (updatedBio, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token; 
+        const response = await userService.updateBio(token, updatedBio);
+        thunkAPI.dispatch(updateUserBio(response));
+        return response;
+    } catch (error) {
+        console.log(error);
+        return thunkAPI.rejectWithValue(error);
+    }
+});
+
 
 export const sendFollowRequest = createAsyncThunk('user/sendFollowRequest', async (requestedUserID, thunkAPI) => {
     try {
@@ -63,6 +76,18 @@ export const userSlice = createSlice({
                 state.users = action.payload;
             })
             .addCase(getUsers.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(updateBio.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateBio.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+            })
+            .addCase(updateBio.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
