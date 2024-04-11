@@ -16,7 +16,7 @@ function Feed() {
     }
    
     return (
-        <div>
+        <div  className="overflow-y-scroll h-screen md:h-[85vh]">
             {posts.map((post,i) => {
                 return <Post key={i} post={post} />
             })} 
