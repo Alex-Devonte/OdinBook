@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Link, Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Header from '../Header'
 
 function Profile() {
@@ -52,7 +52,6 @@ function Profile() {
             <div className='p-5 mt-5 flex justify-center'>
                 <p className='font-bold text-slate-400'>Account creation date: {formattedDate}</p>
             </div>
-            <Outlet></Outlet>
         </div>
     )
 }
