@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+const { body, validationResult } = require('express-validator');
 const User = require('../models/user');
 
 exports.get_users = asyncHandler(async (req, res, next) => {
@@ -16,6 +17,20 @@ exports.get_users = asyncHandler(async (req, res, next) => {
 
     return res.json(discoverUsers);
 });
+
+exports.update_bio = [
+    body('updatedBio')
+        .trim()
+        .escape(),
+
+    asyncHandler(async (req, res, next) => {
+        const userID = req.user._id;
+        const {updatedBio} = req.body;
+
+        const updateUserBio = await User.findByIdAndUpdate(userID, { bio: updatedBio }, {new: true }).exec();
+        return res.json(updateUserBio);
+    })
+];
 
 exports.send_follow_request = asyncHandler(async (req, res, next) => {
     //IDs of currently logged in user and user that is being sent a follow request
