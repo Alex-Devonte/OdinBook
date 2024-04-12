@@ -15,6 +15,7 @@ const userRouter = require('./routes/users');
 const postRouter = require('./routes/post');
 
 var app = express();
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 //------MongoDB & Mongoose settings
 //Ensures that only values set in the schema get saved to the db
