@@ -73,6 +73,15 @@ export const authSlice = createSlice({
                 bio
             };
             localStorage.setItem('user', JSON.stringify(state.user));
+        },   
+        updateUserProfilePic: (state, action) => {
+            const { profilePicture } = action.payload;
+            state.user = {
+                ...state.user,
+                profilePicture
+            };
+
+            localStorage.setItem('user', JSON.stringify(state.user)); 
         },
         updateUserFollowers: (state, action) => {
             const { followers, following } = action.payload;
@@ -123,5 +132,5 @@ export const authSlice = createSlice({
     }
 });
 
-export const {reset, updateUserBio, updateUserFollowers} = authSlice.actions;
+export const {reset, updateUserBio, updateUserProfilePic, updateUserFollowers} = authSlice.actions;
 export default authSlice.reducer;
