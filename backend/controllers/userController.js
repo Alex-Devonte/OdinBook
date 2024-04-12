@@ -32,6 +32,15 @@ exports.update_bio = [
     })
 ];
 
+exports.upload_profile_picture = asyncHandler(async (req, res, next) => {
+    const userID = req.user._id;
+    const imagePath = `http://localhost:3000/uploads/${req.file.filename}`;
+
+    const updatedUser = await User.findByIdAndUpdate(userID, { profilePicture: imagePath }, { new: true }).exec();
+    return res.json(updatedUser);
+});
+
+
 exports.send_follow_request = asyncHandler(async (req, res, next) => {
     //IDs of currently logged in user and user that is being sent a follow request
     const currentUserID = req.user._id;
