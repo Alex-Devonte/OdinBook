@@ -3,6 +3,7 @@ const GET_USERS_URL = '/api/users';
 const FOLLOW_REQUEST_URL = '/api/users/followUser';
 const RESPOND_TO_REQUEST_URL = '/api/users/respondToRequest';
 const UPDATE_BIO_URL = '/api/users/update/bio';
+const UPLOAD_URL = '/api/users/upload';
 
 
 const checkAuth = (token) => {
@@ -24,6 +25,11 @@ const updateBio = async (token, updatedBio) => {
     return response.data;
 }
 
+const uploadProfilePicture = async (token, pictureData) => {
+    const response = await checkAuth(token).post(UPLOAD_URL, pictureData);
+    return response.data;
+};
+
 const sendFollowRequest = async (token, requestedUserID) => {
     const response = await checkAuth(token).post(FOLLOW_REQUEST_URL, {requestedUserID: requestedUserID});
     return response.data;
@@ -36,5 +42,5 @@ const respondToFollowRequest = async (token, userResponse, followerID) => {
 }
 
 
-const userService = { getUsers, updateBio, sendFollowRequest, respondToFollowRequest };
+const userService = { getUsers, updateBio, uploadProfilePicture, sendFollowRequest, respondToFollowRequest };
 export default userService;

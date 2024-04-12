@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userService from './userService';
-import { updateUserBio, updateUserFollowers } from '../auth/authSlice';
+import { updateUserBio, updateUserProfilePic, updateUserFollowers } from '../auth/authSlice';
 
 const initialState = {
     users: [],
@@ -25,6 +25,18 @@ export const updateBio = createAsyncThunk('user/updateBio', async (updatedBio, t
         const token = thunkAPI.getState().auth.user.token; 
         const response = await userService.updateBio(token, updatedBio);
         thunkAPI.dispatch(updateUserBio(response));
+        return response;
+    } catch (error) {
+        console.log(error);
+        return thunkAPI.rejectWithValue(error);
+    }
+});
+
+export const uploadProfilePicture = createAsyncThunk('user/uploadProfilePicture', async (pictureData, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token; 
+        const response = await userService.uploadProfilePicture(token, pictureData);
+        thunkAPI.dispatch(updateUserProfilePic(response));
         return response;
     } catch (error) {
         console.log(error);
@@ -88,6 +100,18 @@ export const userSlice = createSlice({
                 state.isSuccess = true;
             })
             .addCase(updateBio.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(uploadProfilePicture.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(uploadProfilePicture.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+            })
+            .addCase(uploadProfilePicture.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
