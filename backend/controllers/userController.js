@@ -4,14 +4,14 @@ const User = require('../models/user');
 
 exports.get_users = asyncHandler(async (req, res, next) => {
     const userID = req.user._id;
-    const following = await User.findById(userID).select('following').exec();
-    const followingArr = following.following.map(follow => follow.user);
+    const userFollowers = await User.findById(userID).select('followers').exec();
+    const followersArr = userFollowers.followers.map(follower => follower.user);
 
-    //Get non followed users
+    //Get users that aren't in followers array(haven't sent request yet)
     const discoverUsers = await User.find({
         $and: [
             { _id: { $ne: userID } },
-            { _id: { $nin : followingArr} }
+            { _id: { $nin : followersArr} }
         ]
     }).select('firstName lastName profilePicture followers').limit(10).exec();
 
