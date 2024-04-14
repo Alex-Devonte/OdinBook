@@ -92,12 +92,12 @@ function Post(props) {
             </div>
             <div className='flex gap-1 px-1'>
                 <div onClick={displayComments} className='flex items-center gap-1 p-1 cursor-pointer'>
-                    <FaCommentAlt />
+                    <FaCommentAlt className='fill-slate-700 transition duration-100 ease-linear hover:fill-odin-gold' />
                     <p className='p-1'>{post.comments.length}</p>
                 </div>
                 <div onClick={handleLikePost} className='flex items-center gap-1 p-1 cursor-pointer'>
                     {/* Color heart icon if user liked the post */}
-                    {post.likes.find(id => id === userID) ? <FaHeart className='fill-red-500' /> : <FaHeart />}
+                    {post.likes.find(id => id === userID) ? <FaHeart className='fill-red-500' /> : <FaHeart className='fill-slate-700 transition duration-100 ease-linear hover:fill-red-300' />}
                     <p className='p-1'>{post.likes.length}</p>
                 </div>
             </div>
@@ -114,7 +114,7 @@ function Post(props) {
                             className='resize-none flex-1 rounded-md my-3 p-1'
                             >
                         </textarea>
-                        <IoMdSend onClick={handleCreateComment} className='fill-black text-white w-10 h-10 cursor-pointer transition duration-75 ease-linear hover:fill-odin-gold' />
+                        <IoMdSend onClick={handleCreateComment} className='fill-slate-700 text-white w-10 h-10 cursor-pointer transition duration-75 ease-linear hover:fill-odin-gold' />
                     </div>
                 </div>
             )} 

@@ -96,7 +96,7 @@ function Profile() {
                 />
                 <div className='flex flex-col'> 
                     <input type='file' accept='image/jpeg, image/png' onChange={handleFileChange} className='bg-slate-700 text-white p-1 rounded-md mb-5 shadow-md'/>
-                    <button onClick={handleUpload} className='bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md'>Change Profile Picture</button>
+                    <button onClick={handleUpload} className='bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'>Change Profile Picture</button>
                 </div>
             </div>
             <div className='p-5 md:flex flex-col  md:w-1/4 md:mx-auto'>
@@ -105,11 +105,11 @@ function Profile() {
                     <textarea cols='100' name='bio' readOnly={!editMode ? true : false} onChange={handleChange} value={bio} className='border-2 border-slate-600 my-6 p-1 read-only:bg-slate-400 read-only:text-white'></textarea>
                     {editMode ? (
                             <div className='flex justify-between'>
-                                <button onClick={handleSubmit} className='self-start bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md'>Update Bio</button>
-                                <button onClick={handleCancel} className='self-start bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md'>Cancel</button>
+                                <button onClick={handleSubmit} className='self-start bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'>Update Bio</button>
+                                <button onClick={handleCancel} className='self-start bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'>Cancel</button>
                             </div>
                         ) : (
-                            <button onClick={handleEditBio} className='self-start bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md'>Edit Bio</button>
+                            <button onClick={handleEditBio} className='self-start bg-slate-700 text-white p-2 rounded-md mb-5 shadow-md transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'>Edit Bio</button>
                         )}                           
                 </div>
             </div>

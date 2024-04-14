@@ -89,8 +89,8 @@ function FollowList() {
                                     {/* Display buttons for pending followers */}
                                     {follower.status === 'pending' && (
                                         <div className='flex flex-col items-center justify-end gap-5 mt-5 lg:flex-row lg:mt-0 lg:p-3 '>
-                                            <button onClick={(e) => respondToRequest(e, follower.user)} value='accepted' className='bg-odin-gold text-white p-1 rounded-xl w-20 '>Accept</button>
-                                            <button onClick={(e) => respondToRequest(e, follower.user)} value='denied' className='bg-odin-gold text-white p-1 rounded-xl w-20 '>Deny</button>
+                                            <button onClick={(e) => respondToRequest(e, follower.user)} value='accepted' className='bg-slate-700 text-white p-1 shadow-md rounded-xl w-20 transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'>Accept</button>
+                                            <button onClick={(e) => respondToRequest(e, follower.user)} value='denied' className='bg-slate-700 text-white p-1 shadow-md rounded-xl w-20 transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'>Deny</button>
                                         </div>
                                     )}
                                 </li>

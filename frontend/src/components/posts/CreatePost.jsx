@@ -35,7 +35,7 @@ function CreatePost() {
                     className='resize-none flex-1 rounded-lg p-2 focus:outline-odin-gold'
                 >
                 </textarea> 
-                <button onClick={handleCreatePost} className='bg-odin-gold text-white rounded-md p-1 ml-3 w-14'>Post</button>
+                <button onClick={handleCreatePost} className='bg-slate-700 text-white p-2 shadow-md rounded-md ml-3 w-14 transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'>Post</button>
             </div>
         </div>
     )
