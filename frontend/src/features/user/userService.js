@@ -37,7 +37,6 @@ const sendFollowRequest = async (token, requestedUserID) => {
 
 const respondToFollowRequest = async (token, userResponse, followerID) => {
     const response = await checkAuth(token).post(RESPOND_TO_REQUEST_URL, {userResponse, followerID});
-    console.log(response.data);
     return response.data;
 }
 

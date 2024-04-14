@@ -101,8 +101,6 @@ exports.login_user = asyncHandler(async (req, res, next) => {
         password = process.env.GUEST_PASSWORD
     }
 
-    console.log(email, password)
-
     //Check for user email
     const user = await User.findOne({email}).populate('followers.user').populate('following.user').collation({locale: 'en', strength: 2});
 
@@ -114,7 +112,6 @@ exports.login_user = asyncHandler(async (req, res, next) => {
         let userWithToken = JSON.parse(JSON.stringify(user));
         userWithToken.token = token;
         
-        console.log('User w token:', userWithToken);
         //Send user and token
         res.json(userWithToken);
     } else {

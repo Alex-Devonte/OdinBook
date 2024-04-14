@@ -15,7 +15,6 @@ export const getUsers = createAsyncThunk('user/getUsers', async (_, thunkAPI) =>
         const token = thunkAPI.getState().auth.user.token; 
         return await userService.getUsers(token);
     } catch (error) {
-        console.log(error);
         return thunkAPI.rejectWithValue(error);
     }
 });
@@ -27,7 +26,6 @@ export const updateBio = createAsyncThunk('user/updateBio', async (updatedBio, t
         thunkAPI.dispatch(updateUserBio(response));
         return response;
     } catch (error) {
-        console.log(error);
         return thunkAPI.rejectWithValue(error);
     }
 });
@@ -39,7 +37,6 @@ export const uploadProfilePicture = createAsyncThunk('user/uploadProfilePicture'
         thunkAPI.dispatch(updateUserProfilePic(response));
         return response;
     } catch (error) {
-        console.log(error);
         return thunkAPI.rejectWithValue(error);
     }
 });
@@ -53,7 +50,6 @@ export const sendFollowRequest = createAsyncThunk('user/sendFollowRequest', asyn
         return response;
     } catch (error) {
         const message = error.response.data.error.message;
-        console.log(message);
         return thunkAPI.rejectWithValue(message);
     }
 });
@@ -66,7 +62,6 @@ export const respondToFollowRequest = createAsyncThunk('user/respondToFollowRequ
         return response;
     } catch (error) {
         const message = error.response.data.error.message;
-        console.log(message);
         return thunkAPI.rejectWithValue(message);
     }
 });

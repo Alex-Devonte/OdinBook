@@ -44,7 +44,6 @@ export const getPosts = createAsyncThunk('posts/getPosts', async (_, thunkAPI) =
         return await postService.getPosts(token);
     } catch (error) {
         const message = error.message;
-        console.log(error);
         return thunkAPI.rejectWithValue(message);
     }
 });
@@ -55,7 +54,6 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (postID, th
         return await postService.deletePost(token, postID);
     } catch (error) {
         const message = error.message;
-        console.log(error);
         return thunkAPI.rejectWithValue(message);
     }
 });
@@ -66,7 +64,6 @@ export const likePost = createAsyncThunk('posts/likePost', async (postID, thunkA
         return await postService.likePost(token, postID);
     } catch (error) {
         const message = error.message;
-        console.log(error);
         return thunkAPI.rejectWithValue(message);
     }
 });
@@ -78,7 +75,6 @@ export const createComment = createAsyncThunk('posts/createComment', async (comm
         return await postService.createComment(token, postID, commentText);
     } catch (error) {
         const message = error.message;
-        console.log(error);
         return thunkAPI.rejectWithValue(message);
     }
 });
@@ -90,7 +86,6 @@ export const deleteComment = createAsyncThunk('posts/deleteComment', async (comm
         return await postService.deleteComment(token, postID, commentID);
     } catch (error) {
         const message = error.message;
-        console.log(error);
         return thunkAPI.rejectWithValue(message);
     }
 });
@@ -169,7 +164,6 @@ export const postSlice = createSlice({
             .addCase(createComment.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                console.log(action.payload);
 
                 //Find index of post
                 const postIndex = state.posts.findIndex(post => post._id === action.payload._id);

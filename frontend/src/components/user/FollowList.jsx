@@ -12,10 +12,6 @@ function FollowList() {
     const {user} = useSelector((state) => state.auth);
     const followers = user.followers;
     const following = user.following;
-    useEffect(() => {
-        console.log(user)   ;
-        
-    }, [user]);
 
     const respondToRequest = (e, followerID) => {
         const userResponse = e.target.value;

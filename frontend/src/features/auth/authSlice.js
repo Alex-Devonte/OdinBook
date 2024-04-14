@@ -39,7 +39,6 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) =>{
     try {
         return await authService.login(user);
     } catch(error) {
-        console.log(error);
         //Send specific message if unauthorized
         if (error.response.status == 401) {
             const message = error.response.data;
@@ -66,7 +65,6 @@ export const authSlice = createSlice({
         },
         updateUserBio: (state, action) => {
             const { bio } = action.payload;
-            console.log(bio);
 
             state.user = {
                 ...state.user,

@@ -18,7 +18,6 @@ const checkAuth = asyncHandler(async (req, res, next) => {
 
       next();
     } catch (error) {
-      console.log(error);
       next(new Error('Not authorized'));
     }
   }

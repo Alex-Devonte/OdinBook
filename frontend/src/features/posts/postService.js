@@ -18,7 +18,6 @@ const checkAuth = (token) => {
 
 const createPost = async (postContent, token) => {
     const response = await checkAuth(token).post(CREATE_POST_URL, postContent);
-    console.log(response.data);
     return response.data;
 }
 

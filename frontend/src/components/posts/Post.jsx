@@ -20,7 +20,6 @@ function Post(props) {
 
     const handleCreateComment = () => {
         const commentData = {postID: post._id, commentText: comment};
-        console.log(comment);
         dispatch(createComment(commentData));
         setComment('');
     }
