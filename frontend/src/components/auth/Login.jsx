@@ -44,10 +44,12 @@ function Login() {
         }));
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e, isGuest) => {
         e.preventDefault();
 
-        const userData = {email: formData.email, password: formData.password};
+        //Set userData based on the guest login was clicked
+        const userData = isGuest ? { email: 'guest', password: 'guest' } : { email: formData.email, password: formData.password };
+    
         dispatch(login(userData));
     }
 
@@ -91,9 +93,17 @@ function Login() {
                     </div>
                     <button
                         type='submit'
+                        onClick={(e) => handleSubmit(e, false)}
                         className='bg-black text-white font-bold rounded-md p-2 col-span-full mt-5 transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'
                     >
                         Log In
+                    </button>
+                    <button
+                        type='submit'
+                        onClick={(e) => handleSubmit(e, true)}
+                        className='bg-black text-white font-bold rounded-md p-2 col-span-full mt-5 transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'
+                    >
+                        Guest Login
                     </button>
                     <Link to='/register' className='justify-start text-left mt-5 col-span-full'>Don&#39;t have an account?
                         <span className='text-odin-gold font-bold hover:underline transition duration-100 ease-linear hover:text-black'> Sign up here</span>
