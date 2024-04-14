@@ -93,7 +93,15 @@ exports.register_user = [
 ];
 
 exports.login_user = asyncHandler(async (req, res, next) => {
-    const {email, password} = req.body;
+    let {email, password} = req.body;
+
+    //Use env guest values if its a guest login request
+    if (email === 'guest') {
+        email = process.env.GUEST_EMAIL;
+        password = process.env.GUEST_PASSWORD
+    }
+
+    console.log(email, password)
 
     //Check for user email
     const user = await User.findOne({email}).populate('followers.user').populate('following.user').collation({locale: 'en', strength: 2});
