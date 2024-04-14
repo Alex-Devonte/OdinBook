@@ -44,7 +44,7 @@ function Post(props) {
                 <p>{comment.author.firstName} {comment.author.lastName}</p>
             </div>
             <div className='flex justify-between p-1'>
-                <p>COMMENT{comment.text}</p>
+                <p>{comment.text}</p>
                 {(comment.author._id === userID || userID === post.author._id) && ( //Check if comment author is current user or if current user created the post
                     <FaTrash onClick={() => handleDeleteComment(post._id, comment._id)} className='cursor-pointer transition duration-75 ease-linear hover:fill-red-600'/>
                 )}
