@@ -15,7 +15,7 @@ function Header() {
     const onLogout = () => {
         dispatch(logout());
         dispatch(reset());
-        navigate('/login', {state: {'siteMsg': 'Logged out successfully'}});
+        navigate('/login', {state: {type: 'siteMsg', message: 'Logged out successfully'}});
         window.history.replaceState({}, ''); //Clear location state
     }
 
