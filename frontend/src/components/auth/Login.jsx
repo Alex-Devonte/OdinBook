@@ -19,16 +19,19 @@ function Login() {
 
     useEffect(() => {
         if (location.state) {
-            const { siteMsg, errorMsg } = location.state;
-
-            if (siteMsg) {
-                toast.info(siteMsg, { theme: 'colored'});
-            } else if (errorMsg) {
-                toast.error(errorMsg);
-                
+            const { type, message } = location.state;
+            switch (type) {
+                case 'siteMsg':
+                    toast.info(message, { theme: 'colored' });
+                    break;
+                case 'errorMsg':
+                    toast.error(message);
+                    break;
+                default:
+                    break;
             }
-            window.history.replaceState({}, ''); //Clear location state
         }
+        window.history.replaceState({}, ''); //Clear location state
 
         //Navigate to home if user logs in successfully or is already logged in
         if (isSuccess || user) {

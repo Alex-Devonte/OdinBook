@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import Header from '../Header'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { updateBio, uploadProfilePicture } from '../../features/user/userSlice';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -10,13 +10,21 @@ function Profile() {
     const dispatch = useDispatch();
 
     const [editMode, setEditMode] = useState(false);
-    const [bio, setBio] = useState(user.bio);
-    const [profilePicture, setProfilePicture] = useState(user.profilePicture);
+    const [bio, setBio] = useState('');
+    const [profilePicture, setProfilePicture] = useState('');
     const [fileData, setFileData] = useState({file: '', fileName:'', extension:''});
+
+    useEffect(() => {
+        //Set initial values for bio and profilePicture when user object changes
+        if (user) {
+            setBio(user.bio || '');
+            setProfilePicture(user.profilePicture || '');
+        }
+    }, [user]);
 
     //Send user to login page if they aren't logged in
     if (user === null) {
-        return <Navigate to='/login' state={{type: 'auth', message: 'You must be logged in to access your profile'}}/>;
+        return <Navigate to='/login' state={{type: 'errorMsg', message: 'You must be logged in to access your profile'}}/>;
     }
 
     const formattedDate = new Date(user.dateCreated).toLocaleDateString('en-US', {
