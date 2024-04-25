@@ -9,7 +9,7 @@ const multerS3 = require('multer-s3');
 
 let upload;
 
-if (process.env.NODE.ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
     //Configure AWS
     const s3 = new aws.S3({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
