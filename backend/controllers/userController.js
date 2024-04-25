@@ -38,7 +38,8 @@ exports.upload_profile_picture = asyncHandler(async (req, res, next) => {
 
     if (process.env.NODE_ENV === 'production') {
         //imagePath for AWS S3
-        imagePath = `${process.env.AWS_BUCKET_URL}${req.file.filename}`;
+        imagePath = `${process.env.AWS_BUCKET_URL}${req.file.key}`;
+    
     } else {
         //imagePath for local storage
         imagePath = `${process.env.UPLOAD_URL}/${req.file.filename}`;
