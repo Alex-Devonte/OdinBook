@@ -4,17 +4,48 @@ const userController = require('../controllers/userController');
 const {checkAuth} = require('../authMiddleware');
 
 const multer  = require('multer')
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/')
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix+file.originalname)
-    }
-});
+const aws = require('aws-sdk');
+const multerS3 = require('multer-s3');
 
-const upload = multer({ storage: storage});
+let upload;
+
+if (process.env.NODE.ENV === 'production') {
+    //Configure AWS
+    const s3 = new aws.S3({
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        region: process.env.AWS_REGION
+    });
+
+    upload = multer({
+        storage: multerS3({
+            s3: s3,
+            bucket: process.env.AWS_BUCKET,
+            acl: 'public-read',
+            metadata: function (req, file, cb) {
+                cb(null, {fieldName: file.fieldname});
+            },
+            key: function (req, file, cb) {
+                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+                cb(null, uniqueSuffix + '-' + file.originalname);
+            }
+        })
+    });
+} else {
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'uploads/')
+        },
+        filename: function (req, file, cb) {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix+file.originalname)
+        }
+    });
+    upload = multer({ storage: storage});
+}
+
+
+
 
 
 router.get('/', checkAuth, userController.get_users);

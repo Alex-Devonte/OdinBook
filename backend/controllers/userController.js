@@ -34,7 +34,15 @@ exports.update_bio = [
 
 exports.upload_profile_picture = asyncHandler(async (req, res, next) => {
     const userID = req.user._id;
-    const imagePath = `${process.env.UPLOAD_URL}/${req.file.filename}`;
+    let imagePath;
+
+    if (process.env.NODE_ENV === 'production') {
+        //imagePath for AWS S3
+        imagePath = `${process.env.AWS_BUCKET_URL}${req.file.filename}`;
+    } else {
+        //imagePath for local storage
+        imagePath = `${process.env.UPLOAD_URL}/${req.file.filename}`;
+    }
 
     const updatedUser = await User.findByIdAndUpdate(userID, { profilePicture: imagePath }, { new: true }).exec();
     return res.json(updatedUser);
