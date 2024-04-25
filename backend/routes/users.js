@@ -21,9 +21,11 @@ if (process.env.NODE_ENV === 'production') {
         storage: multerS3({
             s3: s3,
             bucket: process.env.AWS_BUCKET,
-            acl: 'public-read',
             metadata: function (req, file, cb) {
-                cb(null, {fieldName: file.fieldname});
+                cb(null, {
+                    fieldName: file.fieldname,
+                    contentType: file.mimetype
+                });
             },
             key: function (req, file, cb) {
                 const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -43,10 +45,6 @@ if (process.env.NODE_ENV === 'production') {
     });
     upload = multer({ storage: storage});
 }
-
-
-
-
 
 router.get('/', checkAuth, userController.get_users);
 router.put('/update/bio', checkAuth, userController.update_bio);
