@@ -47,7 +47,7 @@ app.use('/api/posts', postRouter);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
   app.get('*', (req, res) => 
-    res.sendFile(path.resolve(__dirname, '../backend', 'frontend', 'dist', 'index.html')));
+    res.sendFile(path.resolve(__dirname, '../frontend', 'dist', 'index.html')));
 }
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
