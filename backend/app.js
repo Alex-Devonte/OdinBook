@@ -43,12 +43,6 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/posts', postRouter);
 
-//Serve frontend
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
-  app.get('*', (req, res) => 
-    res.sendFile(path.resolve(__dirname, '../frontend', 'dist', 'index.html')));
-}
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
