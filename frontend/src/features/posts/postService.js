@@ -1,10 +1,14 @@
 import axios from 'axios';
-const CREATE_POST_URL = '/api/posts/create';
-const GET_POSTS_URL = '/api/posts/';
-const LIKE_POST_URL = '/api/posts/likePost';
-const DELETE_POST_URL = '/api/posts/delete';
-const CREATE_COMMENT_URL = '/api/posts/comments/create';
-const DELETE_COMMENT_URL = '/api/posts/comments/delete';
+const CREATE_POST_URL = `${import.meta.env.VITE_API_URL}/api/posts/create`;
+const GET_POSTS_URL = `${import.meta.env.VITE_API_URL}/api/posts/`;
+const LIKE_POST_URL = `${import.meta.env.VITE_API_URL}/api/posts/likePost`;
+const DELETE_POST_URL = `${import.meta.env.VITE_API_URL}/api/posts/delete`;
+const CREATE_COMMENT_URL = `${
+  import.meta.env.VITE_API_URL
+}/api/posts/comments/create`;
+const DELETE_COMMENT_URL = `${
+  import.meta.env.VITE_API_URL
+}/api/posts/comments/delete`;
 
 //Checks for valid JWT
 const checkAuth = (token) => {

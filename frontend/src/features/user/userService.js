@@ -1,9 +1,13 @@
 import axios from 'axios';
-const GET_USERS_URL = '/api/users';
-const FOLLOW_REQUEST_URL = '/api/users/followUser';
-const RESPOND_TO_REQUEST_URL = '/api/users/respondToRequest';
-const UPDATE_BIO_URL = '/api/users/update/bio';
-const UPLOAD_URL = '/api/users/upload';
+const GET_USERS_URL = `${import.meta.env.VITE_API_URL}/api/users`;
+const FOLLOW_REQUEST_URL = `${
+  import.meta.env.VITE_API_URL
+}/api/users/followUser`;
+const RESPOND_TO_REQUEST_URL = `${
+  import.meta.env.VITE_API_URL
+}/api/users/respondToRequest`;
+const UPDATE_BIO_URL = `${import.meta.env.VITE_API_URL}/api/users/update/bio`;
+const UPLOAD_URL = `${import.meta.env.VITE_API_URL}/api/users/upload`;
 
 
 const checkAuth = (token) => {
