@@ -25,21 +25,36 @@ function DiscoverUsers() {
                 const isRequestSent = user.followers.some(follower => follower.user === currentUserID);
                 
                 return (
-                    <div key={i} className='flex justify-between my-5 p-3'>
-                        <div className='flex items-center gap-5 w-full'>
-                            <img className='flex justify-center w-20 rounded-full' src={user.profilePicture} />
-                            <p className='text-lg'>{user.firstName + ' ' + user.lastName}</p>
-                        </div>
-                        <div className='flex items-center '>
-                            {/* If request is already sent, show 'Request Sent' */}
-                            {isRequestSent ? (
-                                <button disabled className='bg-slate-700 text-white p-2 shadow-md rounded-xl opacity-35 w-44 h-10 '>Request Sent</button>
-                            ) : (  
-                                <button onClick={() => sendRequest(user._id)} className='bg-slate-700 text-white p-2 shadow-md rounded-xl cursor-pointer w-44 h-10 transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold'>Send Friend Request</button>
-                            )}
-                        </div>
+                  <div key={i} className="flex justify-between my-5 p-3">
+                    <div className="flex items-center gap-5 w-full">
+                      <img
+                        className="flex justify-center w-20 h-20 object-cover object-top rounded-full"
+                        src={user.profilePicture}
+                      />
+                      <p className="text-lg">
+                        {user.firstName + " " + user.lastName}
+                      </p>
                     </div>
-                )
+                    <div className="flex items-center ">
+                      {/* If request is already sent, show 'Request Sent' */}
+                      {isRequestSent ? (
+                        <button
+                          disabled
+                          className="bg-slate-700 text-white p-2 shadow-md rounded-xl opacity-35 w-44 h-10 "
+                        >
+                          Request Sent
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => sendRequest(user._id)}
+                          className="bg-slate-700 text-white p-2 shadow-md rounded-xl cursor-pointer w-44 h-10 transition duration-100 ease-linear hover:bg-odin-gold active:bg-odin-gold"
+                        >
+                          Send Friend Request
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
             })}
         </div>
     )
